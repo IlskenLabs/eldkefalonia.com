@@ -1,0 +1,5 @@
+If the slider doesn't showing up on your front-end page, 
+you probably have a jQuery conflict when multiple libraries loaded to the document and causes a Javascript error. 
+Enabling this option may solve your problem. Please don't enable this option if you don't experiencing any issues.
+
+add_action('wp_enqueue_scripts', 'layerslider_enqueue_content_res',36); file LayerSlider/layerslider.php line 44

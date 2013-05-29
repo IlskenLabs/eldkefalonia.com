@@ -1,0 +1,41 @@
+Version 1.3
+- Fixed add gallery images.
+	changed file: st-framework/lib/admin/js/admin-js
+- Fixed style for prit device.
+	Changed  file: st-framework/settings/js-and-css.php
+- Allowed add link in footer copyright.
+	Changed file: footer.php
+- Fixed Flush rewrite rules for custom post types
+    Change file: st-framework/lib/st-filters.php
+    Change file: st-framework/admin/admin-interface.php
+- Fixed bug  file: get room services.
+	Changed file:  templates/room.php
+- Fixed bug save normal fonts in admin
+	Changed file:  st-framework/admin/admin-functions.php
+	
+	
+Version 1.2
+- Fixed show reservation button in single room
+    Changed file: templates/room.php
+- Add option link open in new tab for shortcode button ( [button type="medium" link="#" target="_blank" ] Button[/button] ).
+    Changed file: st-framework/settings/shortcode.php
+- Fixed Accordion auto close when click to content
+    Changed file: assets/js/custom.js
+- Changed translate for frontend only.
+    Changed file: st-framework/translate/translate.php
+- Fixed bug import.
+     Changed file: st-framework/settings/post-type.php
+- Replace static room type with post type room  in SEND REQUEST FOR RESERVATION form 
+    Changed file:  templates/forms/reservation.php
+     
+- NEW FEATURE:  Add settings to change slug for post types
+    Changed file st-framework/settings/post-type.php
+    Changed file st-framework/settings/admin-settings.php
+- Add Back to top Button:
+    Changed file templates/template-functions.php add function st_back_totop
+    Changed function st_theme_font
+    Changed file style.css add Back to top button style.
+    Changed file assets/js/custom.js
+ 
+- Fixed bug Accordion:
+    Changed file assets/js/shortcode.js
