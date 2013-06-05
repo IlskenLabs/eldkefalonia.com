@@ -648,7 +648,76 @@ function st_portfolio_thumbnail($post_id='', $size ='st_small_thumb',$rand_if_sl
          return apply_filters('st_portfolio_thumbnail',$html, $post_id);
 }
 
+function st_attraction_thumbnail($post_id='', $size ='st_small_thumb',$rand_if_slider= false,$small_video_thumb = false){
+     $st_page_options = get_page_builder_options($post_id);
+     $html ='';
+            switch(strtolower($st_page_options['thumbnail_type'])){
+            case 'video':
+              
+               $video = st_get_video($st_page_options['video_code'],$data);
+               // echo var_dump($data);
+                if(($size=='st_small_thumb' || $small_video_thumb ) && !empty($data)){
+                      $html ='<span class="video-thumb" video="'.$data['type'].'" size='.$size.' video-id="'.$data['video_id'].'"></span>';
+                     
+                }else{
+                    $html = $video ;
+                    if($html==''){
+                        $html =  '<span class="video-thumb no-thumb"></span>';
+                    }
+                }
+                
+            break;
+            case 'slider':
+              
+                if(count($st_page_options['thumbnails']['images'])){
+                    if($rand_if_slider===true || $size =='st_small_thumb'){ // show rand image
+                       $rand_key = array_rand($st_page_options['thumbnails']['images'], 1);
+                       $thumb_image_url = wp_get_attachment_image_src( $st_page_options['thumbnails']['images'][$rand_key],$size);
+                      
+                     
+                         $title = 'title="'. esc_attr (sprintf(__( 'Permalink to %s', 'smooththemes' ) , get_the_title($post_id) ) ). '"  rel="bookmark" ';
+                           $html = '<span class="had-thumb">
+                            <a href="'.get_permalink($post_id).'" '.$title.'><img alt="" src="'.$thumb_image_url[0].'" ></a>                                
+                            </span>';
+                      
+  
+                    }else{
+                        
+                        $slider_data  = array_merge( array('slider_items'=> $st_page_options['thumbnails'] ), array('show_caption'=>'no','class'=>'portfolio-slider-wrapper','size'=>$size));
+                        $slider_data['show_slider'] = 1;
+                         $slider_data['slider_type']= 'flexslider';
+                        $html =  st_get_content_from_func('st_the_slider', $slider_data );
+                    
+                    }
+                }else{
+                    $html = ' <span class="no-thumb no-slider"></span>';
+                }
+               
 
+            break;
+            default;
+                 if ( has_post_thumbnail($post_id) ) {
+                     $thumb_id = get_post_thumbnail_id($post_id);
+                      $thumb_image_url = wp_get_attachment_image_src( $thumb_id, $size);
+                       $full_img = wp_get_attachment_image_src( $thumb_id, 'full');
+                       $ptitle =  get_the_title($post_id);
+                        $title = 'title="'. esc_attr (sprintf(__( 'Permalink to %s', 'smooththemes' ) , $ptitle ) ). '"  rel="bookmark" ';
+                     
+                        $html ='
+                                <a href="'.$full_img[0].'" rel="prettyPhoto"  title="'.esc_html($ptitle).'">
+                                    <span class="portfolio-thumb-hover"></span>
+                                    <span class="hover-lightbox-image"></span>
+                                </a>
+                                <img src="'.$thumb_image_url[0].'" alt="'.esc_html($ptitle).'">
+                            ';    
+                     
+      
+                }else{
+                    $html = ' <span class="no-thumb"></span>';
+            }
+         } 
+         return apply_filters('st_attraction_thumbnail',$html, $post_id);
+}
 
 
 function st_post_thumbnail_gallery($post_id='', $size ='st_medium'){

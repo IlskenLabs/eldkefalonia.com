@@ -695,6 +695,186 @@ function st_portfolio_func( $atts, $content='' ) {
 add_shortcode('portfolio', 'st_portfolio_func');
 
 
+function st_attraction_func( $atts, $content='' ) {
+     global $wp_query;
+    global $post;
+    $tmp_post = $post;
+  extract( shortcode_atts( array(
+    'title' => 0,
+    'cats' => '',
+        'numpost'=>'-1',
+        'exclude'=>'',
+        'orderby'=>'ID',
+        'order'=>'DESC',
+        'pbwith'=>'1_1',
+        'num_col'=>4,
+        'site_layout'=>'',
+        'show_heading'=>'y',
+        'filter_type'=>'default',
+        'custom_filter_text'=>'',
+        'custom_filter_url'=>'',
+        'row_index'=>9 // not begin
+  ), $atts ) );
+    
+    $wc = $pbwith;
+     $w=  explode('_',$wc);
+     $t = intval($w[0]);
+     $m = intval($w[1]);
+     
+     if($m>0 and $t>0){
+         $c = $t/$m;
+     }else{
+        $c=1;
+     }
+
+      $html  = $heading  = $htitle='';
+      if($show_heading!='n'){
+        if( $title!=''){
+            $f_class='';
+             $htitle = esc_html($title);
+        }else{
+            $f_class=" hide-heading ";
+        }
+          
+        $filter ='';
+        $is_filter = false;
+      
+        if($filter_type=='default'){
+            $terms =  get_terms( 'attraction_tag', array('include'=>$cats,'fields'=>'all') );
+            $filter = '<ul data-option-key="filter" class="cpt-filters'.$f_class.'">
+                    <li><a class="selected" href="#filter=*">'.__('All','smooththemes').'</a></li>';
+             foreach($terms as $term){
+                $filter.='<li><a  href="#filter=.'.esc_attr($term->slug).'">'.esc_html(stripslashes($term->name)).'</a></li>';
+             }                
+                                
+            $filter.='</ul>';
+            
+            $is_filter = true;
+        }else{
+            if($custom_filter_text!=''){
+                 if(trim($custom_filter_url)==''){
+                $custom_filter_url ='#';
+                }
+                $filter ='<a class="view-all" href="'.esc_attr($custom_filter_url).'">'.esc_html($custom_filter_text).'</a>';
+            }
+        }
+      
+      
+       $heading ='<div class="builder-title-wrapper clearfix'.( ($is_filter && $row_index==1 ) ? '  has_filter' : '  no_filter').'">
+                        <h3 class="builder-item-title">'.( ($is_filter && $row_index==1 ) ? '' : $htitle ).'</h3>
+                        <div class="builter-title-alt right">
+                            '.$filter.'
+                        </div>
+                        <div class="clear"></div>
+                    </div>';
+        
+        } // end show heading
+        
+      
+          if(intval($numpost)>0){
+            $numpost = intval($numpost);
+          }else{
+            $numpost = -1; // get all portfolio
+          }
+      
+        $args = array( 'posts_per_page' => $numpost );
+        if($exclude!=''){
+            $exclude= explode(',',$exclude);
+        }
+        
+        $args['post__not_in'] = $exclude;
+        $args['orderby'] = $orderby;
+        $args['order'] = $order;
+        $args['post_type']='attraction';
+        
+        if(!empty($cats)){
+            $args['tax_query'] =array(
+                    'relation' => 'AND',
+                array(
+                  'taxonomy' => 'attraction_tag',
+                  'field' => 'id',
+                  'terms' => explode(',',$cats),
+                        'operator'=>'IN'
+                )
+              );
+          }
+          
+          // added in ver 1.3
+        if(st_is_wpml()){
+              $args['sippress_filters'] = true;
+              $args['language'] = get_bloginfo('language');
+         }
+          
+         //  echo var_dump($wp_query);
+         $new_query = new WP_Query($args);
+     
+        //$myposts =  $wp_query->query($args);
+        $myposts = $new_query->posts;
+     
+        $num_col = intval($num_col)>0 ?  intval($num_col) : 4 ;
+
+        $e = '';
+        $c =0;
+        $i = 1;
+        if(!isset($type))
+            $type ='';
+       
+       $image_size ='st_medium';
+
+        // echo $num_col;
+        $col_txt = stpb_number_to_text(12/$num_col);
+        foreach( $myposts as $post ) : setup_postdata($post);
+            $term_list = wp_get_post_terms($post->ID, 'attraction_tag', array("fields" => "all"));
+            $filter_class=array();
+             $caption=  array();
+            foreach($term_list as $term){
+                $filter_class[]= $term->slug;
+                $caption[] = $term->name ;
+            }
+            
+             $ptitle = the_title_attribute( 'echo=0' );
+             $title =  sprintf( esc_attr__( 'Permalink to %s', 'smooththemes' ), $ptitle ); 
+             $link = get_permalink($post->ID);
+              
+             $caption  = (!empty($caption)) ? join(esc_html(' / '),$caption) : '&nbsp;&nbsp;';
+              
+             $caption =   '<div class="cpt-desc">'.$caption.'</div>';
+             
+            $html.= '<div class="cpt-item item-isotope '.$col_txt.' columns b30 '.esc_attr(join(' ',$filter_class)).'">
+                            <div class="thumb-wrapper">
+                                '.st_post_thumbnail_gallery($post->ID).'
+                            </div>
+                             <div class="cpt-detail">
+                                <h2 class="cpt-title"><a href="'.$link.'">'.get_the_title($post->ID).'</a></h2>
+                                '.$caption.'
+                            </div>   
+                        </div>';
+                    if($i>=$num_col){
+                        $html.='<div class="clear"></div>';
+                        $i=1;
+                    }else{
+                         $i++;
+                    }
+        endforeach; 
+      
+     wp_reset_query();
+     
+  return '<div class="builder-item-wrapper builder-portfolio">
+                '.$heading.'
+                <div class="builder-item-content row'.( $is_filter ? ' has-isotope' : ' no-isotope').'">
+                    <div class="twelve columns b0">
+                        <div class="cpt-items row clearfix isotope">
+                        '.do_shortcode($html).'
+                        </div>
+                    </div>
+                </div>
+              
+            </div>';
+}
+add_shortcode('attraction', 'st_attraction_func');
+
+
+
 
 // for entry content
 function st_this_entry_func($atts, $content='' ){

@@ -171,7 +171,7 @@ function  st_builder_meta_layout_sidebar($name='', $values = array() , $post = f
         $current_layout =  $values['layout'];
         
         if(empty($current_layout)){
-            $values['layout'] = $current_layout = (in_array($post->post_type, array('portfolio'))) ? '1' : st_get_setting("layout",2) ;// default right sidebar
+            $values['layout'] = $current_layout = (in_array($post->post_type, array('portfolio', 'attraction'))) ? '1' : st_get_setting("layout",2) ;// default right sidebar
         }
         
          foreach($layouts as $k => $item){
@@ -303,6 +303,62 @@ function st_builder_meta_portfolio($name='', $values = array() , $post = false){
                  <p>
                 <strong><?php _e('Website url','smooththemes'); ?></strong><br />
                  <input type="text" class="regular-text"  name="<?php echo $name.'[portfolio_website]'; ?>" value="<?php echo esc_attr($values['portfolio_website']); ?>" />
+                </p>
+          </div>
+         
+       <?php /** ============= END Sub layout for portfolio ============= */ ?>
+    
+    <?php
+}
+
+function st_builder_meta_attraction($name='', $values = array() , $post = false){
+    
+    if(!in_array(strtolower($post->post_type),array('attraction'))){
+        return ;
+    }
+    ?>
+
+       <?php /** ============= Sub layout for portfolio ============= */ ?>
+        
+         <div class="stdive"></div>
+         <?php /*
+         <div class="portfolio-layout">
+             <h4><?php _e('Portfolio Layout','smooththemes'); ?></h4>
+             <?php
+               $portfolio_layouts = array('half'=>__('Single portfolio half','smooththemes'),'full'=>'Single portfolio wide');
+              ?>
+               <select name="<?php echo $name.'[portfolio_layout]'; ?>" class="chzn-select">
+                     <?php foreach($portfolio_layouts as $pk=> $pl){ 
+                         $selected="";
+                         if($values['portfolio_layout']==$pk){
+                            $selected = ' selected ="selected" ';
+                         }
+                        ?>
+                     <option value="<?php echo esc_attr($pk); ?>" <?php echo $selected; ?> ><?php echo esc_html($pl); ?></option>
+                     <?php } ?>
+               </select>
+         </div><!-- portfolio-layout -->
+         */ ?>
+         
+         
+         <h4><?php _e('Attraction details','smooththemes'); ?></h4>
+          <div class="portfolio-details">
+             <p>
+                <strong><?php _e('Distance','smooththemes'); ?></strong><br />
+                 <input type="text" class="regular-text"  name="<?php echo $name.'[attraction_distance]'; ?>" value="<?php echo esc_attr($values['attraction_distance']); ?>" />
+                </p>
+                
+                <p>
+                <strong><?php _e('Rating','smooththemes'); ?></strong><br />
+                 <input type="text" class="regular-text"  name="<?php echo $name.'[attraction_rating]'; ?>" value="<?php echo esc_attr($values['attraction_rating']); ?>" />
+                </p>
+                <p>
+                <strong><?php _e('Price','smooththemes'); ?></strong><br />
+                 <input type="text" class="regular-text"  name="<?php echo $name.'[attraction_price]'; ?>" value="<?php echo esc_attr($values['attraction_price']); ?>" />
+                </p>
+                 <p>
+                <strong><?php _e('Website url','smooththemes'); ?></strong><br />
+                 <input type="text" class="regular-text"  name="<?php echo $name.'[attraction_website]'; ?>" value="<?php echo esc_attr($values['attraction_website']); ?>" />
                 </p>
           </div>
          

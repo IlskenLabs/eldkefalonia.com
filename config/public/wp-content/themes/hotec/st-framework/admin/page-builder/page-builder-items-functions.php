@@ -1320,6 +1320,162 @@ function stpb_reservation_form($function_name,$name='',$values= array()){
     <?php
 }
 
+function stpb_attraction($function_name,$name='',$values= array()){
+    
+     if(empty($values['data']['show_title'])){
+      //  $values['data']['show_title'] ='y';
+    }
+    ?>
+    <h2 class="stpb_title"><?php _e('Attraction','smooththemes'); ?></h2>
+      <div class="box-inner stpb-text" >
+            
+            <input type="hidden" class="group-name func_name" group-name="<?php echo $affter_name.'[function]'; ?>"  value="<?php echo $function_name; ?>" />
+            
+            <div class="item-gr">
+             <label>
+                <h4><?php _e('Title', 'smooththemes'); ?></h4>
+                <input type="text"  class="group-name bigtitle" group-name="<?php echo $affter_name.'[data][title]'; ?>" value="<?php echo esc_attr($values['data']['title']); ?>" />
+             </label>
+            </div>
+      
+             <div class="lb-stdive"></div>
+    
+             <div class="item-gr">
+               <h4><?php echo _e('Show in Tags', 'smooththemes'); ?></h4>
+                <?php
+                
+                if(empty($values['data']['cats']) or !is_array($values['data']['cats'])){
+                    $values['data']['cats'] = array();
+                }
+                $select = wp_dropdown_categories('selected=-99&id=&show_count=1&orderby=name&echo=0&class=group-name++lb-chzn-select&hierarchical=1&taxonomy=attraction_tag');
+                $select = preg_replace("#<select([^>]*)>#", "<select$1  multiple=\"multiple\" selected-ids=\"".join(',',$values['data']['cats'])."\" group-name=\"{$affter_name}[data][cats][]\">", $select);
+                echo $select;
+               //  echo $select;
+                ?>
+                
+             </div>
+             
+              <div class="lb-stdive"></div>
+             
+             <?php if(intval($values['data']['numpost'])<=0 ){
+               // $values['data']['numpost'] = 4;
+             } ?>
+             
+             <div class="item-gr">
+             <label>
+                 <h4><?php _e('Number of attractions to show', 'smooththemes'); ?></h4>
+                <input type="text"  class="group-name" style="width: 40px;" size="4" max="2" group-name="<?php echo $affter_name.'[data][numpost]'; ?>" value="<?php echo esc_attr($values['data']['numpost']); ?>" />
+                <span><?php _e('Leave empty to show all','smooththemes'); ?></span>
+             </label>
+            </div>
+            
+             <div class="lb-stdive"></div>
+             
+             <div class="item-gr">
+                 <h4><?php _e('How many columns to display ?','smooththemes'); ?></h4>
+                <select group-name="<?php echo $affter_name.'[data][num_col]'; ?>"  class="group-name lb-chzn-select" >
+                
+                <?php 
+                if($values['data']['num_col']==''){
+                    $values['data']['num_col'] = 3;
+                }
+                foreach( array(2,3) as $i):
+                     
+                     $selected="";
+                     if($values['data']['num_col']==$i){
+                        $selected = ' selected ="selected" ';
+                     }
+                     
+                      ?>
+                     <option value="<?php echo esc_attr($i); ?>" <?php echo $selected; ?> ><?php echo esc_html($i); ?></option>
+                <?php endforeach; ?>
+                </select>
+             </div>
+              <div class="lb-stdive"></div>
+             <div class="item-gr">
+                
+                <h4><?php _e('Show Filter type','smooththemes'); ?></h4>
+                 <select group-name="<?php echo $affter_name.'[data][filter_type]'; ?>"  class="group-name lb-chzn-select" >
+                <?php 
+                
+                $filter_types = array('default'=>__('Default- Filter by tags','smooththemes'),'custom'=>__('Custom view all','smooththemes'));
+                
+                foreach($filter_types as $k=> $v):
+                     
+                     $selected="";
+                     if($values['data']['filter_type']==$k){
+                        $selected = ' selected ="selected" ';
+                     }
+                     
+                      ?>
+                     <option value="<?php echo esc_attr($k); ?>" <?php echo $selected; ?> ><?php echo esc_html($v); ?></option>
+                     <?php endforeach; ?>
+                </select>
+                
+                 <h4><?php _e('Custom viell all text', 'smooththemes'); ?></h4>
+                <input type="text"  class="group-name"  group-name="<?php echo $affter_name.'[data][custom_filter_text]'; ?>" value="<?php echo esc_attr($values['data']['custom_filter_text']); ?>" />
+                <br /> <br />
+                <h4><?php _e('Custom view all URL', 'smooththemes'); ?></h4>
+                <input type="text"  class="group-name"  group-name="<?php echo $affter_name.'[data][custom_filter_url]'; ?>" value="<?php echo esc_attr($values['data']['custom_filter_url']); ?>" />
+                
+                
+                
+            </div>
+             <div class="lb-stdive"></div>
+             
+            <div class="item-gr">
+             <label>
+                 <h4><?php _e('Exclude', 'smooththemes'); ?></h4>
+                <input type="text"  class="group-name"  group-name="<?php echo $affter_name.'[data][exclude]'; ?>" value="<?php echo esc_attr($values['data']['exclude']); ?>" />
+             </label>
+             <span class="desc"><?php _e('Enter post IDs, separated by commas','smooththemes'); ?></span>
+            </div>
+            
+             <div class="lb-stdive"></div>
+             <?php 
+             $orderby = array(''=>'Default','title'=>'Title','comment_count'=>'Comment count','rand'=>'Random');
+             ?>
+             <div class="item-gr">
+                 <h4><?php _e('Order by','smooththemes'); ?></h4>
+                <select group-name="<?php echo $affter_name.'[data][orderby]'; ?>"  class="group-name lb-chzn-select" >
+                
+                <?php foreach($orderby as $k => $a):
+                     
+                     $selected="";
+                     if($values['data']['orderby']==$k){
+                        $selected = ' selected ="selected" ';
+                     }
+                     
+                      ?>
+                     <option value="<?php echo esc_attr($k); ?>" <?php echo $selected; ?> ><?php echo esc_html($a); ?></option>
+                     <?php endforeach; ?>
+                    
+                </select>
+                
+             </div>
+              <div class="lb-stdive"></div>
+             <?php 
+             $order = array('DESC'=>'Descending ','ASC'=>'Ascending');
+             ?>
+             <div class="item-gr">
+                 <h4><?php _e('Order','smooththemes'); ?></h4>
+                <select group-name="<?php echo $affter_name.'[data][order]'; ?>"  class="group-name lb-chzn-select" >
+                <?php foreach($order as $k => $a):
+                     $selected="";
+                     if($values['data']['order']==$k){
+                        $selected = ' selected ="selected" ';
+                     }
+                     
+                      ?>
+                     <option value="<?php echo esc_attr($k); ?>" <?php echo $selected; ?> ><?php echo esc_html($a); ?></option>
+                     <?php endforeach; ?>
+                    
+                </select>
+             </div>
+              
+    </div>
+    <?php
+}
 
 
 function  stpb_events_calendar($function_name,$name='',$values= array()){

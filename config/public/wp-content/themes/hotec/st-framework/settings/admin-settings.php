@@ -747,7 +747,16 @@ $posttype_tab = array(
         'type'=>'text',
         'desc'        =>'Change/Rewrite the permalink when you use permalink as /%postname%/ ',
         'desc_bottom' =>''
+     ),
+     array(
+        'name'        =>'post_attraction',
+        'title'       =>__('Change attraction slug','smooththemes'),
+        'default'=>'',
+        'type'=>'text',
+        'desc'        =>'Change/Rewrite the permalink when you use permalink as /%postname%/ ',
+        'desc_bottom' =>''
      )
+
     
 );
 

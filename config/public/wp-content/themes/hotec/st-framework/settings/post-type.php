@@ -3,6 +3,7 @@
 
 $room_slug = trim(st_get_setting('post_room')) !='' ? trim(st_get_setting('post_room')) : 'room'  ;
 $portfolio_slug = trim(st_get_setting('post_portfolio')) !='' ? trim(st_get_setting('post_portfolio')) : 'portfolio'  ;
+$attraction_slug = trim(st_get_setting('post_attraction')) !='' ? trim(st_get_setting('post_attraction')) : 'attraction'  ;
 $event_slug=  trim(st_get_setting('post_event')) !='' ? trim(st_get_setting('post_event')) : 'event'  ;
  
  
@@ -99,6 +100,30 @@ register_post_type('room',array(
         'menu_position'=>20
         
  ));
+
+ register_post_type('attraction',array(
+        'label'=>_x('Attraction','smooththemes'),
+        'labels'=>array(
+            'singular_name'=>_x('Attraction','smooththemes'),
+            'menu_name'=>_x('Attraction','smooththemes'),
+            'all_items'=>_x('All Attractions','smooththemes'),
+            'add_new'=>_x('Add Attraction','smooththemes'),
+            'add_new_item'=>_x('Add new Attraction','smooththemes'),
+            'edit_item'=>_x('Edit Attraction','smooththemes'),
+            'new_item'=>_x('New Attraction','smooththemes'),
+            'view_item'=>_x('View Attraction','smooththemes'),
+            'search_items'=>_x('Search Attraction','smooththemes'),
+            'not_found'=>_x('Not found','smooththemes'),
+            'not_found_in_trash'=>_x('Not found in trash','smooththemes')  
+        ),
+        'public' => true,
+        'show_ui'=>true,
+        'rewrite'=> array('slug'=> $attraction_slug,  'with_front' => false),
+        'supports'=>array( 'title','editor' ,'thumbnail','excerpt' ),
+        'menu_position'=>20
+        
+ ));
+ 
  
 
 register_post_type('gallery',array(

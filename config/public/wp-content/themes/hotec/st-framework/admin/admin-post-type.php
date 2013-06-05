@@ -102,7 +102,7 @@ function add_new_st_post_type_columns($columns) {
 }
 // Add to admin_init function
 
-foreach( array('post','room_service','room','event', 'portfolio')  as $k=> $v ){
+foreach( array('post','room_service','room','event', 'portfolio', 'attraction')  as $k=> $v ){
     add_action('manage_'.$v.'_posts_custom_column', 'st_manage_post_type_columns', 10, 2);
     add_filter('manage_edit-'.$v.'_columns', 'add_new_st_post_type_columns',10);
 }

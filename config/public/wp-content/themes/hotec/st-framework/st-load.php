@@ -21,7 +21,7 @@ $frameworkVersion     = trim($themeInfo['Framework Version']);
 #-----------------------------------------------------------------
 # Define variables
 #-----------------------------------------------------------------
-add_theme_support( 'post-thumbnails', array('post','portfolio','event','room','room_service') ); 
+add_theme_support( 'post-thumbnails', array('post','portfolio','attraction','event','room','room_service') ); 
 
 add_theme_support( 'woocommerce' );
 

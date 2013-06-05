@@ -7,7 +7,7 @@ include('page-builder-meta.php');
 
 
 function st_page_builder_support($post_types=array()){
-    $post_types = array('post','page','portfolio','event','room');
+    $post_types = array('post','page','portfolio', 'attraction','event','room');
    return  $post_types;
 }
 
@@ -181,6 +181,12 @@ function get_page_builder_items(){
                 'block'=>false,
                 'generate_func' =>'stpb_portfolio_generate'
             ),
+            'stpb_attraction'=>array(
+                'title'=>__('Attraction','smooththemes'),
+                'block'=>false,
+                'generate_func' =>'stpb_attraction_generate'
+            ),
+
             
             'stpb_rooms'=>array(
                 'title'=>__('Rooms','smooththemes'),

@@ -573,6 +573,16 @@ function stpb_portfolio_generate($data,$type=''){
      return $short_code;
 }
 
+function stpb_attraction_generate($data,$type=''){
+    if(empty($data)){
+        return '';
+    }
+    
+     $short_code = ' [attraction '.st_shortcode_attr($data['data']).'] ';
+     $short_code = apply_filters('stpb_attraction_generate',$short_code,$data);
+      
+     return $short_code;
+}
 
 
 function stpb_this_entry_generate($data,$type=''){
